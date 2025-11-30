@@ -1,0 +1,33 @@
+package com.autobots.automanager.servicos;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.autobots.automanager.entidades.Documento;
+import com.autobots.automanager.repositorios.DocumentoRepositorio;
+
+@Service
+public class DocumentoServico {
+    
+    @Autowired
+    private DocumentoRepositorio repositorio;
+
+    public List<Documento> listar() {
+        return repositorio.findAll();
+    }
+
+    public Optional<Documento> buscarPorId(Long id) {
+        return repositorio.findById(id);
+    }
+
+    public Documento salvar(Documento documento) {
+        return repositorio.save(documento);
+    }
+
+    public void deletar(Long id) {
+        repositorio.deleteById(id);
+    }
+}
