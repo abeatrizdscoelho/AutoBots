@@ -2,7 +2,7 @@
 
 O AutoBots é um micro serviço desenvolvido para a disciplina **Desenvolvimento Web III**, com o objetivo de aprimorar o sistema AutoManager, implementando autenticação e autorização via JWT, gerenciamento de clientes, veículos, mercadorias, serviços e vendas, além de boas práticas REST.
 
-Cada etapa do desenvolvimento foi separada em branches, permitindo visualizar a evolução do projeto de forma organizada.
+Cada etapa do desenvolvimento foi **separada em branches**, permitindo visualizar a evolução do projeto de forma organizada.
 
 ---
 
