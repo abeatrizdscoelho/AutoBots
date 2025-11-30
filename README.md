@@ -23,7 +23,7 @@ git checkout ATVI-AutoBots
 ### 📦 Como baixar o Repositório
 
 ```bash
-git clone https://github.com/abeatrizdscoelho/Atlantis.git
+git clone https://github.com/abeatrizdscoelho/AutoBots.git
 ````
 
 Depois, entre no repositório e selecione a branch da atividade que você deseja visualizar.
