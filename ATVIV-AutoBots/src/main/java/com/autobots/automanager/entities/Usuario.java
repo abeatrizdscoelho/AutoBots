@@ -1,0 +1,78 @@
+package com.autobots.automanager.entities;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.hateoas.RepresentationModel;
+
+import com.autobots.automanager.enumerations.PerfilUsuario;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+@Data
+@Entity
+@EqualsAndHashCode(exclude = { "mercadorias", "vendas", "veiculos" })
+public class Usuario extends RepresentationModel<Usuario> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String nome;
+
+    @Column
+    private String nomeSocial;
+
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@JoinColumn(name = "credencial_id", referencedColumnName = "id")
+	private Credencial credencial;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<PerfilUsuario> perfis = new HashSet<>();
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<Telefone> telefones = new HashSet<>();
+
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	private Endereco endereco;
+
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<Documento> documentos = new HashSet<>();
+
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<Email> emails = new HashSet<>();
+
+	@OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+	@JsonIgnore
+	private Set<Mercadoria> mercadorias = new HashSet<>();
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+	@JsonIgnore
+	@ToString.Exclude
+	private Set<Venda> vendas = new HashSet<>();
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+	@JsonIgnore 
+	@ToString.Exclude
+	private Set<Veiculo> veiculos = new HashSet<>();
+
+	@ManyToOne
+	@JsonBackReference
+	private Empresa empresa;
+}

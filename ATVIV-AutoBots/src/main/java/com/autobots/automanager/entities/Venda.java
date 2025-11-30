@@ -1,0 +1,62 @@
+package com.autobots.automanager.entities;
+
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
+@Data
+@Entity
+@EqualsAndHashCode(exclude = { "empresa", "cliente", "vendedor", "veiculo" })
+public class Venda {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private Date cadastro;
+
+    @Column(nullable = false, unique = true)
+    private String identificacao;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
+    @JsonIgnore
+    @ToString.Exclude
+    private Usuario cliente;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
+    @JsonIgnore
+    @ToString.Exclude
+    private Usuario vendedor;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
+    private Set<Mercadoria> mercadorias = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
+    private Set<Servico> servicos = new HashSet<>();
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REFRESH })
+    @JsonIgnore
+    @ToString.Exclude
+    private Veiculo veiculo;
+
+    @ManyToOne
+	@JsonBackReference
+	private Empresa empresa;
+}
